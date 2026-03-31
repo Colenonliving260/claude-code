@@ -43,72 +43,72 @@ At runtime, the architecture is layered:
 
 ```mermaid
 flowchart TB
-    U[User / SDK / Remote Client] --> CLI[entrypoints/cli.tsx]
+    U["User / SDK / Remote Client"] --> CLI["entrypoints/cli.tsx"]
 
-    CLI -->|fast paths| FP1[--version]
-    CLI -->|fast paths| FP2[daemon/bg/templates/bridge/mcp runners]
-    CLI -->|default| INIT[entrypoints/init.ts]
+    CLI -->|fast paths| FP1["--version"]
+    CLI -->|fast paths| FP2["daemon/bg/templates/bridge/mcp runners"]
+    CLI -->|default| INIT["entrypoints/init.ts"]
 
-    INIT --> CFG[Config + Settings Loader]
-    INIT --> TRUST[Trust & Safety bootstrap]
-    INIT --> NET[Proxy/mTLS/CA + network preconnect]
-    INIT --> TELE[Telemetry/Gates init]
-    INIT --> MAIN[main.tsx]
+    INIT --> CFG["Config + Settings Loader"]
+    INIT --> TRUST["Trust & Safety bootstrap"]
+    INIT --> NET["Proxy/mTLS/CA + network preconnect"]
+    INIT --> TELE["Telemetry/Gates init"]
+    INIT --> MAIN["main.tsx"]
 
-    MAIN --> MODE{Execution Mode}
-    MODE --> I[Interactive TUI]
-    MODE --> H[Headless / SDK stream-json]
-    MODE --> R[Remote/Bridge attach paths]
+    MAIN --> MODE{"Execution Mode"}
+    MODE --> I["Interactive TUI"]
+    MODE --> H["Headless / SDK stream-json"]
+    MODE --> R["Remote/Bridge attach paths"]
 
-    I --> PRINT[cli/print.ts runHeadless/runHeadlessStreaming]
+    I --> PRINT["cli/print.ts runHeadless/runHeadlessStreaming"]
     H --> PRINT
     R --> PRINT
 
-    PRINT --> QE[QueryEngine.ts ask()/submitMessage]
-    QE --> QL[query.ts query loop]
+    PRINT --> QE["QueryEngine.ts ask()/submitMessage"]
+    QE --> QL["query.ts query loop"]
 
-    QL --> API[Anthropic API client + retry + compact paths]
-    QL --> TOOL_ORCH[services/tools/toolOrchestration.ts]
-    QL --> STREAM_EXEC[services/tools/StreamingToolExecutor.ts]
+    QL --> API["Anthropic API client + retry + compact paths"]
+    QL --> TOOL_ORCH["services/tools/toolOrchestration.ts"]
+    QL --> STREAM_EXEC["services/tools/StreamingToolExecutor.ts"]
 
-    TOOL_ORCH --> TOOLS[tools.ts registry + tool pool]
+    TOOL_ORCH --> TOOLS["tools.ts registry + tool pool"]
     STREAM_EXEC --> TOOLS
 
-    TOOLS --> CORE_TOOLS[Bash/File/Web/Agent/Plan/Todo/MCP tools]
-    TOOLS --> GATED_TOOLS[Feature-gated tools]
+    TOOLS --> CORE_TOOLS["Bash/File/Web/Agent/Plan/Todo/MCP tools"]
+    TOOLS --> GATED_TOOLS["Feature-gated tools"]
 
-    QL --> PERM[permissions/* policy + classifier + prompts]
-    PERM --> SANDBOX[utils/sandbox/sandbox-adapter.ts]
+    QL --> PERM["permissions/* policy + classifier + prompts"]
+    PERM --> SANDBOX["utils/sandbox/sandbox-adapter.ts"]
 
-    QL --> TASKS[tasks/* + utils/task/framework.ts]
-    TASKS --> LA[LocalAgentTask]
-    TASKS --> IP[InProcessTeammateTask]
-    TASKS --> RA[RemoteAgentTask]
-    TASKS --> LMS[LocalMainSessionTask]
+    QL --> TASKS["tasks/* + utils/task/framework.ts"]
+    TASKS --> LA["LocalAgentTask"]
+    TASKS --> IP["InProcessTeammateTask"]
+    TASKS --> RA["RemoteAgentTask"]
+    TASKS --> LMS["LocalMainSessionTask"]
 
-    PRINT --> MCP[services/mcp/client.ts]
-    MCP --> MCP_TR[stdio/sse/http/ws transports]
-    MCP --> MCP_AUTH[OAuth + auth flows + session refresh]
+    PRINT --> MCP["services/mcp/client.ts"]
+    MCP --> MCP_TR["stdio/sse/http/ws transports"]
+    MCP --> MCP_AUTH["OAuth + auth flows + session refresh"]
 
-    MAIN --> SKILLS[skills/loadSkillsDir.ts + bundled skills]
-    MAIN --> PLUGINS[plugin loader + builtin plugins]
+    MAIN --> SKILLS["skills/loadSkillsDir.ts + bundled skills"]
+    MAIN --> PLUGINS["plugin loader + builtin plugins"]
 
-    MAIN --> BRIDGE_INIT[bridge/initReplBridge.ts]
-    BRIDGE_INIT --> BRIDGE_ENV[bridge/replBridge.ts env-based CCR]
-    BRIDGE_INIT --> BRIDGE_ENVLESS[bridge/remoteBridgeCore.ts env-less CCRv2]
+    MAIN --> BRIDGE_INIT["bridge/initReplBridge.ts"]
+    BRIDGE_INIT --> BRIDGE_ENV["bridge/replBridge.ts env-based CCR"]
+    BRIDGE_INIT --> BRIDGE_ENVLESS["bridge/remoteBridgeCore.ts env-less CCRv2"]
 
-    MAIN --> REMOTE[remote/RemoteSessionManager.ts]
-    MAIN --> DIRECT[server/directConnectManager.ts]
+    MAIN --> REMOTE["remote/RemoteSessionManager.ts"]
+    MAIN --> DIRECT["server/directConnectManager.ts"]
 
-    QE --> STORE[state/store.ts + AppStateStore.ts]
-    QE --> SESSION[utils/sessionStorage.ts JSONL transcripts]
-    QE --> HISTORY[history.ts]
-    QE --> MEM[memdir/* memory system]
+    QE --> STORE["state/store.ts + AppStateStore.ts"]
+    QE --> SESSION["utils/sessionStorage.ts JSONL transcripts"]
+    QE --> HISTORY["history.ts"]
+    QE --> MEM["memdir/* memory system"]
 
-    CFG --> RM[remoteManagedSettings service]
-    CFG --> PL[policyLimits service]
+    CFG --> RM["remoteManagedSettings service"]
+    CFG --> PL["policyLimits service"]
 
-    TELE --> GB[GrowthBook feature gates]
+    TELE --> GB["GrowthBook feature gates"]
 
     classDef core fill:#e9f5ff,stroke:#1f78b4,stroke-width:1px;
     classDef sec fill:#fff4e6,stroke:#d97706,stroke-width:1px;
