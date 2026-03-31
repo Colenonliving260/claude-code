@@ -4,12 +4,12 @@
 
 ---
 
-
 ## Source Disclosure Note
 
 Anthropic included `cli.js.map` in the published npm package of Claude Code (along with `cli.js`).  
 I extracted that source map and decompiled/reconstructed it to recover the complete mapped source code, then used that codebase for this analysis.
 
+---
 
 ## Executive Overview
 
